@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Side Kick — Decide Anything, Instantly</title>
+<meta name="description" content="Flip a coin, spin the wheel, or get a surprise decision. Free decision-making app.">
+<style>
+  :root{--bg:#0f1117;--card:#1a1d27;--card2:#232735;--line:#2c3140;--txt:#eef0f6;--mut:#9aa3b5;--acc:#ffd75e;--acc2:#ff8b6b;--ok:#3ecf8e;--purp:#a78bfa;--pink:#f472b6}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--txt);line-height:1.5;min-height:100vh}
+  .wrap{max-width:760px;margin:0 auto;padding:24px 18px 80px}
+  header{display:flex;align-items:center;justify-content:space-between;padding:10px 0 20px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:22px}.logo .dot{font-size:26px}
+  .cta-top{background:var(--ok);color:#06281a;border:none;border-radius:999px;padding:8px 16px;font-weight:700;cursor:pointer}
+  .hero{text-align:center;padding:14px 0 26px}
+  .hero h1{font-size:clamp(28px,6vw,44px);font-weight:900;letter-spacing:-.5px}.hero h1 span{color:var(--acc)}
+  .hero p{color:var(--mut);margin-top:10px;font-size:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+  label{display:block;font-weight:600;margin:16px 0 6px;font-size:14px}
+  input,textarea,select{width:100%;background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:13px 14px;font-size:15px;font-family:inherit}
+  textarea{min-height:64px;resize:vertical}
+  input:focus,textarea:focus,select:focus{outline:2px solid var(--acc);border-color:transparent}
+  .seg{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .seg button{flex:1;min-width:120px;background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:11px;cursor:pointer;font-weight:600;font-size:14px}
+  .seg button.active{background:var(--acc);color:#1a1200;border-color:var(--acc)}
+  .btn{width:100%;margin-top:22px;background:var(--acc);color:#1a1200;border:none;border-radius:14px;padding:16px;font-size:17px;font-weight:800;cursor:pointer;transition:transform .05s}.btn:active{transform:scale(.99)}
+  #result{display:none;margin-top:22px}
+  .reveal{text-align:center;padding:26px 18px;border:2px solid var(--acc);border-radius:18px;background:linear-gradient(180deg,#1c1f2b,#161925)}
+  .bigface{font-size:64px;line-height:1;animation:pop .4s}
+  @keyframes pop{0%{transform:scale(.4)}80%{transform:scale(1.15)}100%{transform:scale(1)}}
+  .verdict{font-size:clamp(20px,4.5vw,28px);font-weight:900;margin:12px 0 4px}
+  .sub{color:var(--mut);font-size:14px}
+  .method{display:inline-block;margin-top:12px;background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--mut)}
+  .affil{margin-top:16px;background:var(--card2);border:1px dashed var(--acc);border-radius:14px;padding:16px;text-align:left}
+  .affil b{display:block;margin-bottom:8px}
+  .grid2{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .affil a{display:block;background:#111827;color:var(--txt);border:1px solid var(--line);text-decoration:none;text-align:center;padding:12px;border-radius:12px;font-weight:700;font-size:14px}
+  .affil a:hover{border-color:var(--acc)}
+  .share{margin-top:14px;display:flex;gap:10px}
+  .share button{flex:1;background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:12px;font-weight:700;cursor:pointer;font-size:14px}
+  .share button:hover{border-color:var(--acc)}
+  .alt{color:var(--mut);font-size:14px;margin-top:14px;padding:12px;border:1px dashed var(--line);border-radius:12px}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:50;padding:18px}
+  .modal.open{display:flex}
+  .modal .box{background:var(--card);border:1px solid var(--line);border-radius:20px;max-width:420px;width:100%;padding:26px;text-align:center}
+  .modal h2{font-size:22px}.modal .price{font-size:34px;font-weight:900;color:var(--acc);margin:10px 0 4px}
+  .modal ul{list-style:none;text-align:left;margin:16px 0;color:var(--mut)}
+  .modal li{padding:6px 0;border-bottom:1px solid var(--line)}.modal li b{color:var(--txt)}
+  .modal .close{background:transparent;border:none;color:var(--mut);margin-top:12px;cursor:pointer;font-size:14px}
+  .progbtn{width:100%;background:var(--acc);color:#1a1200;border:none;border-radius:14px;padding:15px;font-size:16px;font-weight:800;cursor:pointer}
+  .news{display:flex;gap:8px;margin-top:10px}.news input{flex:1}
+  .news button{background:var(--acc);color:#1a1200;border:none;border-radius:12px;padding:0 16px;font-weight:800;cursor:pointer}
+  .tagline{text-align:center;color:var(--mut);font-size:13px;margin-top:26px}
+  .confetti{position:fixed;top:-10px;width:10px;height:14px;pointer-events:none;z-index:99}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo"><span class="dot">🎲</span> Side Kick</div>
+    <button class="cta-top" onclick="openPro()">⭐ Go Pro</button>
+  </header>
+
+  <section class="hero">
+    <h1>Can't decide? <span>Let the dice do it.</span></h1>
+    <p>Flip a coin, spin a wheel, or get a surprise. Free forever — go Pro for date nights &amp; unlimited options.</p>
+  </section>
+
+  <div class="card">
+    <label>What can't you decide? (or type "bored")</label>
+    <textarea id="prompt" placeholder="Where should we go for dinner tonight?"></textarea>
+
+    <label>Your options (comma-separated — leave blank for surprise)</label>
+    <textarea id="options" placeholder="Pizza, Sushi, Tacos, Ramen, Burgers"></textarea>
+
+    <label>How do you want to decide?</label>
+    <div class="seg" id="modeSeg">
+      <button data-v="heads_tails">Heads or Tails</button>
+      <button data-v="random_pick" class="active">Random Pick</button>
+      <button data-v="surprise">Surprise Me</button>
+      <button data-v="date_night">Date Night</button>
+    </div>
+
+    <label>Audience / age</label>
+    <div class="seg" id="audSeg">
+      <button data-v="family">Family / Kids</button>
+      <button data-v="teens">Teens</button>
+      <button data-v="adults" class="active">Adults</button>
+    </div>
+
+    <label>Vibe</label>
+    <div class="seg" id="vibeSeg">
+      <button data-v="playful" class="active">Playful</button>
+      <button data-v="sassy">Sassy</button>
+      <button data-v="romantic">Romantic</button>
+      <button data-v="casual">Casual</button>
+    </div>
+
+    <button class="btn" onclick="decide()">🎲 Decide for me</button>
+  </div>
+
+  <div id="result">
+    <div class="reveal">
+      <div class="bigface" id="face">🎲</div>
+      <div class="sub" id="qlabel">—</div>
+      <div class="verdict" id="choice">—</div>
+      <div class="method" id="methodTag">—</div>
+      <div id="runnerText" class="alt" style="display:none"></div>
+      <div class="affil" id="affilBox" style="display:none">
+        <b id="affilTitle">Wanna run with this?</b>
+        <div class="grid2" id="affilLinks"></div>
+      </div>
+      <div class="share">
+        <button onclick="copyResult()">🔗 Copy result</button>
+        <button onclick="downloadCard()">📸 Save card</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:22px">
+    <b>💌 One great decision, once a week.</b>
+    <div class="news">
+      <input id="email" type="email" placeholder="you@email.com" onkeydown="if(event.key==='Enter')saveEmail()">
+      <button onclick="saveEmail()">Join free</button>
+    </div>
+    <p class="tagline">Get a fun, decided-for-you idea every Friday. No spam, unsubscribe anytime.</p>
+  </div>
+
+  <p class="tagline">Side Kick · Decisions made easy · Ad-free on Pro</p>
+</div>
+
+<div class="modal" id="proModal">
+  <div class="box">
+    <h2>⭐ Side Kick Pro</h2>
+    <div class="price">$2.99<span style="font-size:14px;color:var(--mut)">/mo</span></div>
+    <p style="color:var(--mut);font-size:13px">First 7 days free</p>
+    <ul>
+      <li><b>Date Night mode</b> — crafted for two</li>
+      <li><b>Unlimited options</b> — big wheels</li>
+      <li><b>Decision history</b> — your picks saved</li>
+      <li><b>No ads</b> — clean and focused</li>
+      <li><b>Bigger idea banks</b> — fresh surprises</li>
+    </ul>
+    <button class="progbtn" onclick="goCheckout()">Start 7-day free trial</button>
+    <button class="close" onclick="closePro()">Maybe later</button>
+  </div>
+</div>
+
+<script>
+// ====== CONFIG: put your REAL links here (placeholder values below) ======
+var CFG = {
+  // Backend API base (Netlify Functions). Change to your deployed URL.
+  SITE_URL: "https://precious-biscochitos-44c62d.netlify.app", // <- your deployed URL
+  STRIPE_CHECKOUT: "https://buy.stripe.com/test_3cI00c0VR5EJ6b2eDb7kc03", // fallback if backend not deployed
+  AFFILIATE: {
+    food:  "https://www.doordash.com", // <- your DoorDash/UberEats affiliate link
+    movie: "https://www.fandango.com", // <- your movie-ticket affiliate link
+    buy:   "https://www.amazon.com"    // <- your Amazon Associates link
+  }
+};
+function apiBase(){ return CFG.SITE_URL.replace(/\/$/,"") + "/.netlify/functions/"; }
+
+var mode="random_pick", audience="adults", vibe="playful";
+
+document.querySelectorAll('.seg').forEach(function(seg){
+  seg.addEventListener('click', function(e){
+    var b=e.target.closest('button'); if(!b)return;
+    seg.querySelectorAll('button').forEach(function(x){x.classList.remove('active')});
+    b.classList.add('active');
+    if(seg.id==='modeSeg') mode=b.dataset.v;
+    if(seg.id==='audSeg') audience=b.dataset.v;
+    if(seg.id==='vibeSeg') vibe=b.dataset.v;
+  });
+});
+
+var BANKS = {
+  family:[["Board game showdown","with a loser-buys-dessert rule"],["Blanket fort + movie marathon","popcorn required"],["DIY pizza cook-off","loser does dishes"],["Geocaching treasure hunt","winner finds the prize"],["Backyard picnic","with a frisbee and snacks"]],
+  teens:[["Arcade night","winner picks the first game"],["Smoothie lab","make wild combos"],["Karaoke showdown","record it or it didn't happen"],["Popcorn movie duel","pick 3 trailers and vote"],["Bike + taco run","best finds win"]],
+  adults:[["Board game showdown","loser buys dessert"],["Cocktail lab","you're the bartender"],["Taco truck hunt","best bite wins"],["Speakeasy night","dress to impress"],["Spa stay-in","face masks & a good film"]]
+};
+var DATE_QUICK = [
+  ["Romantic picnic","golden hour, one blanket"],["Speakeasy bar hop","two classic drinks"],["Stargazing date","bring the telescope"],["Cooking class for two","wine optional"],["Museum + late dinner","culture, then dessert"]
+];
+
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+
+function decide(){
+  var p=(document.getElementById('prompt').value||'').trim() || "your next decision";
+  var opts=(document.getElementById('options').value||'').split(',').map(function(s){return s.trim()}).filter(Boolean);
+  document.getElementById('qlabel').textContent = "Question: " + p;
+
+  var result, face, method, runners=[];
+  var showAffil=false;
+
+  if(mode==='heads_tails'){
+    method="coin"; face="🪙";
+    var sides = opts.length>=2?opts.slice(0,2):["Heads","Tails"];
+    var winIdx = Math.random()<0.5?0:1;
+    result = (winIdx===0?"Heads — ":"Tails — ") + sides[winIdx];
+  } else if(mode==='random_pick' && opts.length>=2){
+    method="wheel"; face=pick(["🎡","🏆","🎲"]);
+    var winIdx2 = Math.floor(Math.random()*opts.length);
+    result = opts[winIdx2];
+    runners = opts.filter(function(_,i){return i!==winIdx2});
+  } else {
+    // surprise or date_night or too few options
+    var bank = mode==='date_night' ? DATE_QUICK : (BANKS[audience]||BANKS.adults);
+    var idea = pick(bank);
+    result = idea[0];
+    face = pick(["🍕","🎬","🌮","🍜","🍔","🌙","⭐"]);
+    runners = bank.map(function(x){return x[0]}).filter(function(x){return x!==idea[0]});
+    method = mode==='date_night' ? "date dice" : "surprise";
+    // show affiliate links for food/entertainment picks
+    var links=document.getElementById('affilLinks');
+    var eats=[["🍽️ Order food",CFG.AFFILIATE.food],["🎬 Movie night",CFG.AFFILIATE.movie],["📦 Buy the goods",CFG.AFFILIATE.buy]];
+    links.innerHTML = eats.map(function(x){return '<a href="'+x[1]+'" target="_blank" rel="noopener nofollow">'+x[0]+'</a>'}).join('');
+    document.getElementById('affilTitle').textContent = "Wanna run with this? " + (idea[1]||"");
+    document.getElementById('affilBox').style.display='block';
+  }
+
+  document.getElementById('face').textContent = face;
+  document.getElementById('choice').textContent = result;
+  document.getElementById('methodTag').textContent = "Method: " + method;
+
+  var alt = document.getElementById('runnerText');
+  if(runners.length){ alt.style.display='block'; alt.textContent = "Other picks: " + runners.slice(0,3).join(" · "); }
+  else { alt.style.display='none'; }
+
+  document.getElementById('result').style.display='block';
+  document.getElementById('result').scrollIntoView({behavior:'smooth'});
+  confetti();
+}
+
+function copyResult(){
+  var t = "🎲 Side Kick says: " + document.getElementById('choice').textContent;
+  if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){alert("Copied: "+t)}) }
+  else { alert(t) }
+}
+function downloadCard(){
+  var t = "🎲 Side Kick says: " + document.getElementById('choice').textContent;
+  if(navigator.clipboard) navigator.clipboard.writeText(t);
+  alert("Copied — paste it anywhere to share: "+t);
+}
+function saveEmail(){
+  var e=document.getElementById('email').value;
+  if(!e){ alert("Enter your email"); return; }
+  var btn=document.querySelector('.news button'); btn.textContent="Saving…"; btn.disabled=true;
+  fetch(apiBase()+"subscribe", {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({email:e})
+  }).then(function(r){ return r.json().then(function(d){return {ok:r.ok,d:d}}) })
+  .then(function(res){
+    if(res.ok){ alert("🎉 You're in! Check your inbox on Friday."); document.getElementById('email').value=""; }
+    else { alert("Hmm, that didn't save. "+(res.d.error||"Please try again.")); }
+  }).catch(function(){ alert("Email isn't connected yet — put your Mailchimp keys in the backend."); })
+  .finally(function(){ btn.textContent='Join free'; btn.disabled=false; });
+}
+function openPro(){ document.getElementById('proModal').classList.add('open') }
+function closePro(){ document.getElementById('proModal').classList.remove('open') }
+function goCheckout(){
+  // Prefer the live backend checkout; fall back to the direct payment link.
+  fetch(apiBase()+"create-checkout").then(function(r){return r.json()}).then(function(d){
+    if(d && d.url){ window.location.href = d.url; }
+    else { window.open(CFG.STRIPE_CHECKOUT, "_blank"); }
+  }).catch(function(){ window.open(CFG.STRIPE_CHECKOUT, "_blank"); });
+}
+document.getElementById('proModal').addEventListener('click',function(e){ if(e.target===this)this.classList.remove('open') });
+
+function confetti(){
+  var colors=["#ffd75e","#ff8b6b","#a78bfa","#f472b6","#3ecf8e"];
+  for(var i=0;i<40;i++){
+    var c=document.createElement('div'); c.className='confetti';
+    c.style.left=Math.random()*100+"vw"; c.style.background=colors[i%colors.length];
+    document.body.appendChild(c);
+    (function(el){ var x=Math.random()*40-20, r=Math.random()*360;
+      el.animate([{transform:"translateY(0) rotate(0)",opacity:1},{transform:"translate("+x+"px,"+(window.innerHeight+20)+"px) rotate("+r+"deg)",opacity:.8}],{duration:1800+Math.random()*1200,easing:"ease-in"}).onfinish=function(){el.remove()};
+    })(c);
+  }
+}
+</script>
+</body>
+</html>
