@@ -150,16 +150,15 @@
 <script>
 // ====== CONFIG: put your REAL links here (placeholder values below) ======
 var CFG = {
-  // Backend API base (Netlify Functions). Change to your deployed URL.
-  SITE_URL: "https://precious-biscochitos-44c62d.netlify.app", // <- your deployed URL
-  STRIPE_CHECKOUT: "https://buy.stripe.com/test_3cI00c0VR5EJ6b2eDb7kc03", // fallback if backend not deployed
+  SITE_URL: "https://gwgray423-creator.github.io/sidekick", // site home (GitHub Pages)
+  STRIPE_CHECKOUT: "https://buy.stripe.com/aFa00d6xA5G8ax83p42Fa01", // LIVE Stripe payment link
+  EMAIL_ENDPOINT: "", // <- paste your Formspree/Buttondown endpoint here to activate the email box
   AFFILIATE: {
     food:  "https://www.doordash.com", // <- your DoorDash/UberEats affiliate link
     movie: "https://www.fandango.com", // <- your movie-ticket affiliate link
     buy:   "https://www.amazon.com"    // <- your Amazon Associates link
   }
 };
-function apiBase(){ return CFG.SITE_URL.replace(/\/$/,"") + "/.netlify/functions/"; }
 
 var mode="random_pick", audience="adults", vibe="playful";
 
@@ -245,25 +244,22 @@ function downloadCard(){
 function saveEmail(){
   var e=document.getElementById('email').value;
   if(!e){ alert("Enter your email"); return; }
+  if(!CFG.EMAIL_ENDPOINT){ alert("Email signup isn't connected yet — check back soon!"); return; }
   var btn=document.querySelector('.news button'); btn.textContent="Saving…"; btn.disabled=true;
-  fetch(apiBase()+"subscribe", {
-    method:'POST', headers:{'Content-Type':'application/json'},
+  fetch(CFG.EMAIL_ENDPOINT, {
+    method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
     body: JSON.stringify({email:e})
-  }).then(function(r){ return r.json().then(function(d){return {ok:r.ok,d:d}}) })
-  .then(function(res){
-    if(res.ok){ alert("🎉 You're in! Check your inbox on Friday."); document.getElementById('email').value=""; }
-    else { alert("Hmm, that didn't save. "+(res.d.error||"Please try again.")); }
-  }).catch(function(){ alert("Email isn't connected yet — put your Mailchimp keys in the backend."); })
+  }).then(function(r){
+    if(r.ok){ alert("🎉 You're in! Check your inbox on Friday."); document.getElementById('email').value=""; }
+    else { alert("Hmm, that didn't save. Please try again."); }
+  }).catch(function(){ alert("Hmm, that didn't save. Please try again."); })
   .finally(function(){ btn.textContent='Join free'; btn.disabled=false; });
 }
 function openPro(){ document.getElementById('proModal').classList.add('open') }
 function closePro(){ document.getElementById('proModal').classList.remove('open') }
 function goCheckout(){
-  // Prefer the live backend checkout; fall back to the direct payment link.
-  fetch(apiBase()+"create-checkout").then(function(r){return r.json()}).then(function(d){
-    if(d && d.url){ window.location.href = d.url; }
-    else { window.open(CFG.STRIPE_CHECKOUT, "_blank"); }
-  }).catch(function(){ window.open(CFG.STRIPE_CHECKOUT, "_blank"); });
+  // Open the live Stripe payment link directly.
+  window.open(CFG.STRIPE_CHECKOUT, "_blank");
 }
 document.getElementById('proModal').addEventListener('click',function(e){ if(e.target===this)this.classList.remove('open') });
 
