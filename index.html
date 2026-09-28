@@ -153,6 +153,7 @@ var CFG = {
   SITE_URL: "https://gwgray423-creator.github.io/sidekick", // site home (GitHub Pages)
   STRIPE_CHECKOUT: "https://buy.stripe.com/aFa00d6xA5G8ax83p42Fa01", // LIVE Stripe payment link
   EMAIL_ENDPOINT: "", // <- paste your Formspree/Buttondown endpoint here to activate the email box
+  AFFILIATE_ENABLED: false, // <- set to true once your real affiliate links below are filled in
   AFFILIATE: {
     food:  "https://www.doordash.com", // <- your DoorDash/UberEats affiliate link
     movie: "https://www.fandango.com", // <- your movie-ticket affiliate link
@@ -210,12 +211,16 @@ function decide(){
     face = pick(["🍕","🎬","🌮","🍜","🍔","🌙","⭐"]);
     runners = bank.map(function(x){return x[0]}).filter(function(x){return x!==idea[0]});
     method = mode==='date_night' ? "date dice" : "surprise";
-    // show affiliate links for food/entertainment picks
-    var links=document.getElementById('affilLinks');
-    var eats=[["🍽️ Order food",CFG.AFFILIATE.food],["🎬 Movie night",CFG.AFFILIATE.movie],["📦 Buy the goods",CFG.AFFILIATE.buy]];
-    links.innerHTML = eats.map(function(x){return '<a href="'+x[1]+'" target="_blank" rel="noopener nofollow">'+x[0]+'</a>'}).join('');
-    document.getElementById('affilTitle').textContent = "Wanna run with this? " + (idea[1]||"");
-    document.getElementById('affilBox').style.display='block';
+    // Affiliate links stay hidden until CFG.AFFILIATE_ENABLED is true (i.e. real links are in place).
+    if(CFG.AFFILIATE_ENABLED){
+      var links=document.getElementById('affilLinks');
+      var eats=[["🍽️ Order food",CFG.AFFILIATE.food],["🎬 Movie night",CFG.AFFILIATE.movie],["📦 Buy the goods",CFG.AFFILIATE.buy]];
+      links.innerHTML = eats.map(function(x){return '<a href="'+x[1]+'" target="_blank" rel="noopener nofollow">'+x[0]+'</a>'}).join('');
+      document.getElementById('affilTitle').textContent = "Wanna run with this? " + (idea[1]||"");
+      document.getElementById('affilBox').style.display='block';
+    } else {
+      document.getElementById('affilBox').style.display='none';
+    }
   }
 
   document.getElementById('face').textContent = face;
