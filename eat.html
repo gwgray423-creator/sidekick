@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Should I Eat Tonight? — Side Kick</title>
+<meta name="description" content="Can't decide what to eat? Pick your cuisine, diet and whether you're cooking or ordering, then let Side Kick choose dinner for you in one tap. Free, no signup.">
+<link rel="canonical" href="https://gwgray423-creator.github.io/sidekick/eat.html">
+<meta name="theme-color" content="#0f1117">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎲%3C/text%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Side Kick">
+<meta property="og:title" content="What Should I Eat Tonight?">
+<meta property="og:description" content="Pick your cuisine, diet and mood — let Side Kick choose dinner in one tap. Free, no signup.">
+<meta property="og:url" content="https://gwgray423-creator.github.io/sidekick/eat.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="What Should I Eat Tonight?">
+<meta name="twitter:description" content="Pick your cuisine, diet and mood — let Side Kick choose dinner in one tap. Free, no signup.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Why is deciding what to eat so hard?",
+      "acceptedAnswer": { "@type": "Answer", "text": "It's not really a hard choice — it's a low-stakes choice with too many options. When every option is roughly fine, comparing them has no payoff, so your brain loops instead of deciding. A random pick ends the loop instantly and almost always lands somewhere you're happy with." } },
+    { "@type": "Question", "name": "Does this actually pick a good dinner?",
+      "acceptedAnswer": { "@type": "Answer", "text": "It picks from dishes that match the cuisine, diet and cooking-vs-ordering filters you choose, so every result is something you'd genuinely consider. The point isn't a perfect choice — it's ending the debate so you can eat." } },
+    { "@type": "Question", "name": "Can I use it for vegetarian or vegan meals?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Set the diet filter to Vegetarian or Vegan and only matching dishes will be picked." } },
+    { "@type": "Question", "name": "Is it free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Completely free. No account, no signup, no ads." } }
+  ]
+}
+</script>
+<style>
+  :root{--bg:#0f1117;--card:#1a1d27;--card2:#232735;--line:#2c3140;--txt:#eef0f6;--mut:#9aa3b5;--acc:#ffd75e;--ok:#3ecf8e}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--txt);line-height:1.6}
+  .wrap{max-width:720px;margin:0 auto;padding:22px 18px 80px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;text-decoration:none;color:var(--txt)}
+  h1{font-size:clamp(27px,6vw,42px);font-weight:900;letter-spacing:-.5px;margin:22px 0 8px;line-height:1.12}
+  h1 span{color:var(--acc)}
+  .lead{color:var(--mut);font-size:16.5px}
+  h2{font-size:20px;font-weight:800;margin:34px 0 10px}
+  h3{font-size:16px;font-weight:700;margin:20px 0 4px}
+  p{font-size:15.5px;color:#d7dbe6}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;margin-top:20px}
+  .lbl{display:block;font-weight:600;margin:16px 0 6px;font-size:14px}
+  .seg{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .seg button{flex:1;min-width:96px;background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:10px;cursor:pointer;font-weight:600;font-size:14px}
+  .seg button.active{background:var(--acc);color:#1a1200;border-color:var(--acc)}
+  .btn{width:100%;margin-top:22px;background:var(--acc);color:#1a1200;border:none;border-radius:14px;padding:17px;font-size:17px;font-weight:800;cursor:pointer}
+  .btn:active{transform:scale(.99)}
+  #out{display:none;margin-top:20px}
+  .reveal{text-align:center;padding:28px 18px;border:2px solid var(--acc);border-radius:18px;background:linear-gradient(180deg,#1c1f2b,#161925)}
+  .dish{font-size:clamp(24px,6vw,38px);font-weight:900;margin:6px 0 6px;line-height:1.15}
+  .meta{color:var(--mut);font-size:14px}
+  .tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+  .tag{background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:5px 13px;font-size:13px;color:var(--mut)}
+  .row{display:flex;gap:10px;margin-top:14px}
+  .row button{flex:1;background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:13px;font-weight:700;cursor:pointer;font-size:14px}
+  .row button:hover{border-color:var(--acc)}
+  .alt{color:var(--mut);font-size:14px;margin-top:14px;padding:12px;border:1px dashed var(--line);border-radius:12px}
+  .faq{border-top:1px solid var(--line);padding-top:14px;margin-top:14px}
+  .faq:first-of-type{border-top:none}
+  .cta{display:block;text-align:center;text-decoration:none;background:var(--acc);color:#1a1200;font-weight:800;padding:15px;border-radius:14px;margin-top:18px;font-size:16px}
+  a{color:var(--acc)}
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--mut);font-size:14px}
+  footer a{color:var(--mut)}
+  .affil{margin-top:16px;background:var(--card2);border:1px dashed var(--acc);border-radius:14px;padding:16px;text-align:left;display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="logo" href="./"><span>🎲</span> Side Kick</a>
+
+  <h1>What should I eat <span>tonight?</span></h1>
+  <p class="lead">The dinner deadlock is the most common decision there is. Set your filters, hit the button, and eat. No signup, no ads, nothing locked.</p>
+
+  <div class="card">
+    <div class="lbl">Cuisine</div>
+    <div class="seg" id="segCuisine" role="group" aria-label="Cuisine"></div>
+
+    <div class="lbl">Diet</div>
+    <div class="seg" id="segDiet" role="group" aria-label="Diet"></div>
+
+    <div class="lbl">Cook it or order it?</div>
+    <div class="seg" id="segStyle" role="group" aria-label="Cook it or order it"></div>
+
+    <button class="btn" id="go" type="button">🍽️ Decide my dinner</button>
+  </div>
+
+  <div id="out" aria-live="polite">
+    <div class="reveal">
+      <div class="meta">Tonight you're having</div>
+      <div class="dish" id="dish">—</div>
+      <div class="tags" id="tags"></div>
+      <div class="row">
+        <button type="button" id="reroll">🎲 Roll again</button>
+        <button type="button" id="share">📤 Send to whoever's arguing</button>
+      </div>
+      <div class="affil" id="affil">
+        <b id="affilTitle">Get it delivered</b>
+        <div id="affilLinks"></div>
+        <div style="font-size:11px;color:var(--mut);margin-top:10px;line-height:1.4">We may earn a small commission if you order through these links — at no extra cost to you. It never changes what gets picked.</div>
+      </div>
+      <div class="alt" id="others" style="display:none"></div>
+    </div>
+  </div>
+
+  <h2>Why you can't decide what to eat</h2>
+  <p>It isn't a hard decision. It's a <b>low-stakes decision with too many options</b> — and that's a different kind of trap.</p>
+  <p>When every option is roughly fine, comparing them has no payoff. There's no clearly right answer to find, so your brain keeps re-opening the same shortlist instead of closing it. That's why "I don't care, you pick" turns into twenty minutes of nothing. The fix isn't a better list. It's an ending.</p>
+
+  <h3>Three things that actually end it</h3>
+  <p><b>1. Cut the list to three.</b> More than three options and the comparison cost outweighs the benefit. Any more than that is noise wearing a menu.</p>
+  <p><b>2. Pick before you look.</b> Choose a cuisine first, then a dish. Deciding at the wrong level is what keeps the loop open.</p>
+  <p><b>3. Accept "good enough."</b> The gap between a great dinner and a fine dinner is small. The gap between a fine dinner and no dinner is not.</p>
+
+  <h2>Questions</h2>
+  <div class="card" style="margin-top:10px">
+    <div class="faq"><h3>Does this actually pick a good dinner?</h3><p>It picks from dishes that match your filters, so everything it can land on is something you'd genuinely consider. The point isn't a perfect choice — it's ending the debate so you can eat.</p></div>
+    <div class="faq"><h3>Can I use it for vegetarian or vegan meals?</h3><p>Yes — set the diet filter and only matching dishes can be picked.</p></div>
+    <div class="faq"><h3>What if I don't like the answer?</h3><p>Roll again. That's allowed. The rule that makes this work is that you go with the <i>first</i> answer — otherwise you're just comparing again.</p></div>
+    <div class="faq"><h3>Is it free?</h3><p>Completely. No account, no signup, no ads.</p></div>
+  </div>
+
+  <h2>Need a decision that isn't dinner?</h2>
+  <p>Side Kick does coins, wheels, surprises and date nights too.</p>
+  <a class="cta" href="./">← Back to Side Kick</a>
+
+  <footer>
+    <a href="./">Side Kick</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a>
+  </footer>
+</div>
+
+<script>
+// Dish bank. c=cuisine, d=diet (any/veg/vegan), s=style (home/out)
+var DISHES = [
+  {n:"Spaghetti Bolognese",c:"italian",d:"any",s:"home"},
+  {n:"Margherita Pizza",c:"italian",d:"veg",s:"out"},
+  {n:"Lasagna",c:"italian",d:"any",s:"home"},
+  {n:"Fettuccine Alfredo",c:"italian",d:"veg",s:"home"},
+  {n:"Mushroom Risotto",c:"italian",d:"veg",s:"home"},
+  {n:"Calzone",c:"italian",d:"veg",s:"out"},
+  {n:"Chicken Parmigiana",c:"italian",d:"any",s:"home"},
+  {n:"Pesto Pasta",c:"italian",d:"veg",s:"home"},
+  {n:"Tacos",c:"mexican",d:"any",s:"out"},
+  {n:"Burrito Bowl",c:"mexican",d:"any",s:"out"},
+  {n:"Cheese Enchiladas",c:"mexican",d:"veg",s:"home"},
+  {n:"Quesadillas",c:"mexican",d:"veg",s:"home"},
+  {n:"Loaded Nachos",c:"mexican",d:"veg",s:"home"},
+  {n:"Steak Fajitas",c:"mexican",d:"any",s:"home"},
+  {n:"Carnitas Tacos",c:"mexican",d:"any",s:"out"},
+  {n:"Veggie Burrito",c:"mexican",d:"vegan",s:"out"},
+  {n:"Pad Thai",c:"asian",d:"any",s:"out"},
+  {n:"Tonkotsu Ramen",c:"asian",d:"any",s:"out"},
+  {n:"Sushi",c:"asian",d:"any",s:"out"},
+  {n:"Veg Fried Rice",c:"asian",d:"veg",s:"home"},
+  {n:"Pork Dumplings",c:"asian",d:"any",s:"out"},
+  {n:"General Tso's Chicken",c:"asian",d:"any",s:"out"},
+  {n:"Pho",c:"asian",d:"any",s:"out"},
+  {n:"Bibimbap",c:"asian",d:"any",s:"out"},
+  {n:"Katsu Curry",c:"asian",d:"any",s:"out"},
+  {n:"Tofu Stir-fry",c:"asian",d:"vegan",s:"home"},
+  {n:"Butter Chicken",c:"indian",d:"any",s:"out"},
+  {n:"Chicken Tikka Masala",c:"indian",d:"any",s:"out"},
+  {n:"Chana Masala",c:"indian",d:"vegan",s:"home"},
+  {n:"Lamb Biryani",c:"indian",d:"any",s:"out"},
+  {n:"Saag Paneer",c:"indian",d:"veg",s:"out"},
+  {n:"Dal with Naan",c:"indian",d:"vegan",s:"home"},
+  {n:"Cheeseburger",c:"american",d:"any",s:"out"},
+  {n:"BBQ Ribs",c:"american",d:"any",s:"out"},
+  {n:"Mac & Cheese",c:"american",d:"veg",s:"home"},
+  {n:"Fried Chicken",c:"american",d:"any",s:"out"},
+  {n:"Beef Chili",c:"american",d:"any",s:"home"},
+  {n:"Grilled Cheese & Tomato Soup",c:"american",d:"veg",s:"home"},
+  {n:"Meatloaf",c:"american",d:"any",s:"home"},
+  {n:"Buffalo Wings",c:"american",d:"any",s:"out"},
+  {n:"Chicken Shawarma",c:"mediterranean",d:"any",s:"out"},
+  {n:"Falafel Wrap",c:"mediterranean",d:"vegan",s:"out"},
+  {n:"Greek Salad",c:"mediterranean",d:"veg",s:"home"},
+  {n:"Lamb Gyro",c:"mediterranean",d:"any",s:"out"},
+  {n:"Hummus Bowl",c:"mediterranean",d:"vegan",s:"home"},
+  {n:"Chicken Kebabs",c:"mediterranean",d:"any",s:"home"},
+  {n:"Buttermilk Pancakes",c:"breakfast",d:"veg",s:"home"},
+  {n:"Cheese Omelette",c:"breakfast",d:"veg",s:"home"},
+  {n:"Breakfast Burrito",c:"breakfast",d:"any",s:"out"},
+  {n:"French Toast",c:"breakfast",d:"veg",s:"home"},
+  {n:"Avocado Toast",c:"breakfast",d:"vegan",s:"home"},
+  {n:"Bacon & Eggs",c:"breakfast",d:"any",s:"home"},
+  {n:"Burgers & Fries",c:"fastfood",d:"any",s:"out"},
+  {n:"Chinese Takeout Combo",c:"fastfood",d:"any",s:"out"},
+  {n:"Chicken Sandwich",c:"fastfood",d:"any",s:"out"},
+  {n:"Pizza Delivery",c:"fastfood",d:"veg",s:"out"},
+  {n:"Fish & Chips",c:"fastfood",d:"any",s:"out"}
+];
+
+var CFG = {
+  SITE_URL: "https://gwgray423-creator.github.io/sidekick",
+  AFFILIATE_ENABLED: false,
+  AFFILIATE: { order: "https://www.doordash.com" }
+};
+
+var CUISINES = [["any","Anything"],["italian","Italian"],["mexican","Mexican"],["asian","Asian"],["indian","Indian"],["american","American"],["mediterranean","Mediterranean"],["breakfast","Breakfast"],["fastfood","Takeaway"]];
+var DIETS = [["any","No limits"],["veg","Vegetarian"],["vegan","Vegan"]];
+var STYLES = [["any","Either"],["home","Cook at home"],["out","Order out"]];
+
+var sel = { cuisine:"any", diet:"any", style:"any" };
+
+function buildSeg(el, opts, key){
+  el.innerHTML = "";
+  opts.forEach(function(o){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.textContent = o[1];
+    b.dataset.v = o[0];
+    if(sel[key] === o[0]) b.classList.add("active");
+    b.setAttribute("aria-pressed", sel[key] === o[0] ? "true" : "false");
+    el.appendChild(b);
+  });
+  el.addEventListener("click", function(e){
+    var b = e.target.closest("button"); if(!b) return;
+    el.querySelectorAll("button").forEach(function(x){ x.classList.remove("active"); x.setAttribute("aria-pressed","false"); });
+    b.classList.add("active");
+    b.setAttribute("aria-pressed","true");
+    sel[key] = b.dataset.v;
+  });
+}
+
+function pool(){
+  var out = DISHES.filter(function(d){
+    if(sel.cuisine !== "any" && d.c !== sel.cuisine) return false;
+    if(sel.style !== "any" && d.s !== sel.style) return false;
+    if(sel.diet === "veg" && !(d.d === "veg" || d.d === "vegan")) return false;
+    if(sel.diet === "vegan" && d.d !== "vegan") return false;
+    return true;
+  });
+  return out;
+}
+
+var last = null;
+function choose(){
+  var p = pool();
+  if(!p.length){
+    document.getElementById("out").style.display = "block";
+    document.getElementById("dish").textContent = "Nothing matches that combo";
+    document.getElementById("tags").innerHTML = "";
+    document.getElementById("others").style.display = "block";
+    document.getElementById("others").textContent = "Try loosening one filter — for example switch cuisine back to Anything.";
+    document.getElementById("affil").style.display = "none";
+    return;
+  }
+  var pick = p[Math.floor(Math.random() * p.length)];
+  if(p.length > 1){ var guard = 0; while(pick === last && guard++ < 12){ pick = p[Math.floor(Math.random() * p.length)]; } }
+  last = pick;
+
+  document.getElementById("out").style.display = "block";
+  document.getElementById("dish").textContent = pick.n;
+  document.getElementById("tags").innerHTML = "";
+  [pick.c, pick.d === "vegan" ? "vegan" : (pick.d === "veg" ? "vegetarian" : "no limits"), pick.s === "home" ? "cook at home" : "order out"].forEach(function(t){
+    var s = document.createElement("span"); s.className = "tag"; s.textContent = t; document.getElementById("tags").appendChild(s);
+  });
+
+  var others = p.filter(function(d){ return d !== pick; }).slice(0,3).map(function(d){ return d.n; });
+  var oEl = document.getElementById("others");
+  if(others.length){ oEl.style.display = "block"; oEl.textContent = "Also in the running: " + others.join(" · "); }
+  else { oEl.style.display = "none"; }
+
+  if(CFG.AFFILIATE_ENABLED){
+    var box = document.getElementById("affil");
+    document.getElementById("affilTitle").textContent = "Get " + pick.n + " delivered";
+    document.getElementById("affilLinks").innerHTML = '<a href="' + CFG.AFFILIATE.order + '" target="_blank" rel="noopener nofollow sponsored">🛵 Order it now</a>';
+    box.style.display = "block";
+  } else {
+    document.getElementById("affil").style.display = "none";
+  }
+}
+
+function sharePick(){
+  var d = document.getElementById("dish").textContent;
+  var text = "🍽️ Tonight we're having: " + d;
+  var url = CFG.SITE_URL + "/eat.html";
+  if(navigator.share){ navigator.share({ title:"What should we eat?", text:text, url:url }).catch(function(){}); }
+  else if(navigator.clipboard){ navigator.clipboard.writeText(text + "\n" + url); }
+}
+
+buildSeg(document.getElementById("segCuisine"), CUISINES, "cuisine");
+buildSeg(document.getElementById("segDiet"), DIETS, "diet");
+buildSeg(document.getElementById("segStyle"), STYLES, "style");
+document.getElementById("go").addEventListener("click", function(){
+  choose();
+  document.getElementById("out").scrollIntoView({ behavior:"smooth", block:"nearest" });
+});
+document.getElementById("reroll").addEventListener("click", choose);
+document.getElementById("share").addEventListener("click", sharePick);
+</script>
+
+<script>
+  window.goatcounter = { path: function(){ return location.pathname || "/"; } };
+</script>
+<script data-goatcounter="https://sidekick-gwg.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
