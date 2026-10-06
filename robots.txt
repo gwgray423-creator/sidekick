@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gwgray423-creator.github.io/sidekick/sitemap.xml
